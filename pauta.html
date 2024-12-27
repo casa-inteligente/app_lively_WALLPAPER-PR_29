@@ -27,10 +27,6 @@
 
         .table-container {
             margin: 20px 0;
-            float: right;
-            /* Alinha a tabela à direita */
-            width: auto;
-            /* Ajusta a largura conforme necessário */
         }
 
         /* Oculta os botões */
@@ -78,19 +74,32 @@
 </head>
 
 <body>
-    <!-- Cabeçalho -->
     <header class="header">
         <div class="container">
             <h2 class="text-center">Pauta de Audiências</h2>
         </div>
     </header>
 
-    <div class="container table-container" id="pauta-content">
-        <!-- A pauta de compromissos será carregada aqui -->
-    </div>
-    <div class="container last-updated">
-        <!-- Mostrar hora da autalização -->
-        <p id="last_update">--:--</p>
+    <div class="container">
+        <div class="row">
+            <!-- Coluna da esquerda para o logo -->
+            <div class="col-md-4">
+                <div class="logo-container">
+                    <img src="C:/Users/AULA-1/Documents/GitHub/app_lively_WALLPAPER-PR_29/img/logo.jpg" alt="Logo"
+                        class="img-fluid">
+                </div>
+            </div>
+            <!-- Coluna da direita para a tabela e hora atualizada -->
+            <div class="col-md-8">
+                <div class="table-container" id="pauta-content">
+                    <!-- A pauta de compromissos será carregada aqui -->
+                </div>
+                <div class="last-updated">
+                    <!-- Mostrar hora da atualização -->
+                    <p id="last_update">--:--</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Rodapé -->
