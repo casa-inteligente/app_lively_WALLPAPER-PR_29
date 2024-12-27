@@ -100,6 +100,14 @@
                 const now = new Date();
                 const formattedTime = now.toLocaleTimeString('pt-br', { hour: "2-digit", minute: "2-digit" });
                 document.getElementById('last_update').textContent = `${formattedTime}`;
+
+                // Alterar o texto do cabeçalho após o carregamento do conteúdo
+                const headerTitle = document.querySelector("#pauta-content > header > div > h2");
+                console.log('Alterando texto do cabeçalho:', headerTitle);
+                if (headerTitle) {
+                    headerTitle.textContent = 'Movimentações';
+                    console.log('Texto do cabeçalho alterado para:', headerTitle.textContent);
+                }
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
             }
