@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .header {
-            background-color: #343a40;
+            background-color: #9ea7b1;
             color: white;
             padding: 15px 0;
             text-align: center;
             z-index: 1000;
+            position: fixed;
+            width: 100%;
+            top: 0;
         }
 
         .footer {
@@ -34,13 +37,25 @@
         .logo-container {
             flex: 1;
             text-align: center;
-            margin-top: 20px;
+            margin-top: -20px;
+            /* Ajuste a margem negativa conforme necessário */
         }
 
         .logo-container img {
             width: 300px;
             height: 600px;
             object-fit: contain;
+            margin: -130px;
+        }
+
+        .text-container {
+            text-align: center;
+            margin-top: 10px;
+            /* Ajuste a margem negativa conforme necessário */
+        }
+
+        .text-container p {
+            margin: 0px 0;
         }
 
         .table-container {
@@ -92,7 +107,7 @@
 <body>
     <header class="header">
         <div class="container">
-            <h2 class="text-center">Pauta de Audiências</h2>
+            <h2 class="text-center">Movimentações</h2>
         </div>
     </header>
 
@@ -102,6 +117,19 @@
             <div class="logo-container">
                 <img src="https://www.sap.sc.gov.br/wp-content/uploads/2014/03/PP-COLORIDO-PNG.png" alt="Logo"
                     class="img-fluid">
+                <div class="text-container">
+                    <p>Ramais da unidade:</p>
+                    <p>Para transferir (FLASH+RAMAL) <br> Captura de chamada (**)</p>
+                    <p>46671 - Penal</p>
+                    <p>46672 - Plantão</p>
+                    <p>46673 - Casa da revista</p>
+                    <p>46674 - Diretor</p>
+                    <p>46675 - Mauricio</p>
+                    <p>46676 - Enfermagem</p>
+                    <p>46677 - Setor Psicossocial </p>
+                    <p>46678 - Fábio/Weslen</p>
+                    <p>46679 - Chefe de segurança </p>
+                </div>
             </div>
             <!-- Coluna da direita para a tabela e hora atualizada -->
             <div class="table-container" id="pauta-content">
