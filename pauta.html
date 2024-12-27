@@ -77,6 +77,11 @@
             background-color: rgb(231, 222, 222);
             color: rgb(165, 12, 12);
         }
+
+        .highlight-visitas {
+            background-color: rgb(173, 216, 230);
+            /* Azul claro */
+        }
     </style>
     <script>
         async function fetchPauta() {
@@ -86,11 +91,13 @@
                     throw new Error('Erro na resposta da rede');
                 }
                 let data = await response.text();
-                console.log('Dados recebidos:', data); // Adicionando log para verificar os dados recebidos
                 document.getElementById('pauta-content').innerHTML = data;
 
                 // Destacar as linhas do dia atual
                 highlightTodayRows();
+
+                // Destacar as linhas que contêm a palavra "Visitas" na coluna "Nome"
+                highlightVisitasRows();
 
                 // Ocultar os botões após carregar os dados
                 const buttons = document.querySelectorAll('.btn');
@@ -103,10 +110,8 @@
 
                 // Alterar o texto do cabeçalho após o carregamento do conteúdo
                 const headerTitle = document.querySelector("#pauta-content > header > div > h2");
-                console.log('Alterando texto do cabeçalho:', headerTitle);
                 if (headerTitle) {
                     headerTitle.textContent = 'Movimentações';
-                    console.log('Texto do cabeçalho alterado para:', headerTitle.textContent);
                 }
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
@@ -120,6 +125,16 @@
                 const dateCell = row.querySelector('td:first-child');
                 if (dateCell && dateCell.textContent.trim() === today) {
                     row.classList.add('highlight-today');
+                }
+            });
+        }
+
+        function highlightVisitasRows() {
+            const rows = document.querySelectorAll('#pauta-content tr');
+            rows.forEach(row => {
+                const nomeCell = row.querySelector('td:nth-child(3)');
+                if (nomeCell && nomeCell.textContent.toLowerCase().includes('visita')) {
+                    row.classList.add('highlight-visitas');
                 }
             });
         }
