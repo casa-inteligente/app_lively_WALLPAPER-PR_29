@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .header {
-            background-color: #9ea7b1;
+            background-color: #7c8691;
             color: white;
             padding: 15px 0;
             text-align: center;
@@ -31,31 +31,32 @@
         .content {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0;
+            margin-top: 100px;
+            /* Adiciona margem superior para evitar sobreposição com o cabeçalho fixo */
         }
 
         .logo-container {
             flex: 1;
             text-align: center;
-            margin-top: -20px;
-            /* Ajuste a margem negativa conforme necessário */
+            margin-top: -100px;
+            /* Ajuste a margem conforme necessário */
         }
 
         .logo-container img {
             width: 300px;
             height: 600px;
             object-fit: contain;
-            margin: -130px;
         }
 
         .text-container {
             text-align: center;
-            margin-top: 10px;
-            /* Ajuste a margem negativa conforme necessário */
+            margin-top: -120px;
+            /* Ajuste a margem conforme necessário */
         }
 
         .text-container p {
-            margin: 0px 0;
+            margin: 5px 0;
+            /* Ajuste a margem conforme necessário */
         }
 
         .table-container {
@@ -71,6 +72,11 @@
         .btn {
             display: none;
         }
+
+        .highlight-today {
+            background-color: rgb(231, 222, 222);
+            color: rgb(165, 12, 12);
+        }
     </style>
     <script>
         async function fetchPauta() {
@@ -82,6 +88,9 @@
                 let data = await response.text();
                 console.log('Dados recebidos:', data); // Adicionando log para verificar os dados recebidos
                 document.getElementById('pauta-content').innerHTML = data;
+
+                // Destacar as linhas do dia atual
+                highlightTodayRows();
 
                 // Ocultar os botões após carregar os dados
                 const buttons = document.querySelectorAll('.btn');
@@ -96,6 +105,17 @@
             }
         }
 
+        function highlightTodayRows() {
+            const today = new Date().toLocaleDateString('pt-br', { day: '2-digit', month: '2-digit', year: '2-digit' });
+            const rows = document.querySelectorAll('#pauta-content tr');
+            rows.forEach(row => {
+                const dateCell = row.querySelector('td:first-child');
+                if (dateCell && dateCell.textContent.trim() === today) {
+                    row.classList.add('highlight-today');
+                }
+            });
+        }
+
         // Atualizar a pauta a cada 5 minutos (300000 milissegundos)
         setInterval(fetchPauta, 300000); // 300000 milissegundos = 5 minutos
 
@@ -107,7 +127,7 @@
 <body>
     <header class="header">
         <div class="container">
-            <h2 class="text-center">Movimentações</h2>
+            <h2 class="text-center">Pauta de Audiências</h2>
         </div>
     </header>
 
