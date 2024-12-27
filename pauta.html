@@ -25,19 +25,35 @@
             text-align: center;
         }
 
-        .table-container {
+        .content {
+            display: flex;
+            justify-content: space-between;
             margin: 20px 0;
         }
 
-        /* Oculta os botões */
-        .btn {
-            display: none;
+        .logo-container {
+            flex: 1;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        /* Ultima atualização */
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .table-container {
+            flex: 2;
+            margin: 20px;
+        }
+
         .last-updated {
             text-align: right;
             margin-top: 10px;
+        }
+
+        .btn {
+            display: none;
         }
     </style>
     <script>
@@ -70,7 +86,6 @@
         // Atualizar a pauta quando a página for carregada
         window.onload = fetchPauta;
     </script>
-
 </head>
 
 <body>
@@ -81,24 +96,20 @@
     </header>
 
     <div class="container">
-        <div class="row">
+        <div class="content">
             <!-- Coluna da esquerda para o logo -->
-            <div class="col-md-4">
-                <div class="logo-container">
-                    <img src="C:/Users/AULA-1/Documents/GitHub/app_lively_WALLPAPER-PR_29/img/logo.jpg" alt="Logo"
-                        class="img-fluid">
-                </div>
+            <div class="logo-container">
+                <img src="C:/Users/AULA-1/Documents/GitHub/app_lively_WALLPAPER-PR_29/img/logo.jpg" alt="Logo"
+                    class="img-fluid">
             </div>
             <!-- Coluna da direita para a tabela e hora atualizada -->
-            <div class="col-md-8">
-                <div class="table-container" id="pauta-content">
-                    <!-- A pauta de compromissos será carregada aqui -->
-                </div>
-                <div class="last-updated">
-                    <!-- Mostrar hora da atualização -->
-                    <p id="last_update">--:--</p>
-                </div>
+            <div class="table-container" id="pauta-content">
+                <!-- A pauta de compromissos será carregada aqui -->
             </div>
+        </div>
+        <div class="last-updated">
+            <!-- Mostrar hora da atualização -->
+            <p id="last_update">--:--</p>
         </div>
     </div>
 
