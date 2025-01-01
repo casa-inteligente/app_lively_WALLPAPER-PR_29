@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pauta de Audiências</title>
+    <title>Pauta de Compromissos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .header {
@@ -119,11 +119,12 @@
         }
 
         function highlightTodayRows() {
-            const today = new Date().toLocaleDateString('pt-br', { day: '2-digit', month: '2-digit', year: '2-digit' });
+            const today = new Date();
+            const todayString = today.toLocaleDateString('pt-br', { day: '2-digit', month: '2-digit', year: '2-digit' });
             const rows = document.querySelectorAll('#pauta-content tr');
             rows.forEach(row => {
                 const dateCell = row.querySelector('td:first-child');
-                if (dateCell && dateCell.textContent.trim() === today) {
+                if (dateCell && dateCell.textContent.trim() === todayString) {
                     row.classList.add('highlight-today');
                 }
             });
