@@ -99,6 +99,9 @@
                 // Destacar as linhas que contêm a palavra "Visitas" na coluna "Nome"
                 highlightVisitasRows();
 
+                // Desativar links na tabela
+                disableLinks();
+
                 // Ocultar os botões após carregar os dados
                 const buttons = document.querySelectorAll('.btn');
                 buttons.forEach(button => button.style.display = 'none');
@@ -137,6 +140,16 @@
                 if (nomeCell && nomeCell.textContent.toLowerCase().includes('visita')) {
                     row.classList.add('highlight-visitas');
                 }
+            });
+        }
+
+        function disableLinks() {
+            const links = document.querySelectorAll('#pauta-content a');
+            links.forEach(link => {
+                link.removeAttribute('href');
+                link.style.pointerEvents = 'none';
+                link.style.color = 'inherit'; // Remover a aparência de link
+                link.style.textDecoration = 'none';
             });
         }
 
