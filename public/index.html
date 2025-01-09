@@ -40,8 +40,15 @@
 
     <script>
         fetch('/data')
-            .then(response => response.json())
+            .then(response => {
+                console.log('Resposta recebida:', response);
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da rede');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Dados recebidos:', data);
                 const table = document.getElementById('excelTable');
                 const headerRow = document.getElementById('headerRow');
                 const dataRows = document.getElementById('dataRows');
