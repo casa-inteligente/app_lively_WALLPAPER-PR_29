@@ -1,6 +1,6 @@
 const express = require('express');
 const xlsx = require('xlsx');
-const { format, isAfter, startOfDay } = require('date-fns');
+const { format, isAfter, startOfDay, addDays } = require('date-fns');
 const path = require('path');
 
 const app = express();
@@ -22,18 +22,22 @@ app.get('/data', (req, res) => {
     const today = startOfDay(new Date());
 
     const data = xlData.slice(1).map(row => {
-        const date = new Date((row[0] - (25567 + 2)) * 86400 * 1000);
-        const time = new Date((row[1] - (25567 + 2)) * 86400 * 1000);
+        const dateValue = (row[0] - (25567 + 1)) * 86400 * 1000; // Ajustando para o bug do Excel
+        const date = new Date(dateValue);
+        const timeValue = (row[1] - (25567 + 1)) * 86400 * 1000; // Ajustando para o bug do Excel
+        const time = new Date(timeValue);
+
         return {
             DATA: format(date, 'dd/MM'),
             HORA: format(time, 'HH:mm'),
             NOME: row[2],
             SITUACAO: row[3],
-            fullDate: date // Adicionando a data completa para comparação
+            fullDate: startOfDay(date) // Preserve a data para comparação
         };
     });
 
-    const filteredData = data.filter(row => isAfter(row.fullDate, today)).map(({ fullDate, ...rest }) => rest);
+    const filteredData = data.filter(row => isAfter(row.fullDate, today) || row.fullDate.getTime() === today.getTime())
+        .map(({ fullDate, ...rest }) => rest);
 
     res.json(filteredData);
 });
