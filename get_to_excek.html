@@ -82,7 +82,7 @@
     <script>
         async function fetchPautaFromExcel() {
             try {
-                const response = await fetch('Pauta_de_Audiencias.xlsx');
+                const response = await fetch('Pauta%22de%20Audiencias.xlsx');
                 const data = await response.arrayBuffer();
                 const workbook = XLSX.read(data, { type: 'array' });
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -189,6 +189,7 @@
                 </div>
             </div>
             <div class="table-container" id="pauta-content">
+                <!-- Aqui vai o excel -->
             </div>
         </div>
         <div class="last-updated">
