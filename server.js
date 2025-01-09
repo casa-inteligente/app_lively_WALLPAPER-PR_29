@@ -1,6 +1,6 @@
 const express = require('express');
 const xlsx = require('xlsx');
-const { format } = require('date-fns');
+const { format, isAfter, startOfDay } = require('date-fns');
 const path = require('path');
 
 const app = express();
@@ -19,6 +19,8 @@ app.get('/data', (req, res) => {
 
     const xlData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
     const headers = xlData[0];
+    const today = startOfDay(new Date());
+
     const data = xlData.slice(1).map(row => {
         const date = new Date((row[0] - (25567 + 2)) * 86400 * 1000);
         const time = new Date((row[1] - (25567 + 2)) * 86400 * 1000);
@@ -26,15 +28,16 @@ app.get('/data', (req, res) => {
             DATA: format(date, 'dd/MM'),
             HORA: format(time, 'HH:mm'),
             NOME: row[2],
-            SITUACAO: row[3]
+            SITUACAO: row[3],
+            fullDate: date // Adicionando a data completa para comparação
         };
     });
 
-    res.json(data);
+    const filteredData = data.filter(row => isAfter(row.fullDate, today)).map(({ fullDate, ...rest }) => rest);
+
+    res.json(filteredData);
 });
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
-
-
