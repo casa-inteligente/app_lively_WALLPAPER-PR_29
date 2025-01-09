@@ -17,7 +17,7 @@ app.get('/data', (req, res) => {
     worksheet['!ref'] = newRange;
 
     const xlData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
-    console.log('Dados do Excel:', xlData); // Adicionando log para debug
+    //console.log('Dados do Excel:', xlData); // Adicionando log para debug
 
     const data = xlData.slice(1).map(row => {
         const dateValue = new Date(Math.round((row[0] - 25569) * 86400 * 1000)); // Ajustando para o bug do Excel
@@ -47,7 +47,7 @@ app.get('/data', (req, res) => {
         const adjustedDate = addDays(date, 1);
 
         return {
-            DATA: format(adjustedDate, 'dd/MM'),
+            DATA: format(adjustedDate, 'dd/MM/yy'),
             HORA: format(adjustedDate, 'HH:mm'),
             NOME: row[2],
             SITUACAO: row[3],
@@ -55,7 +55,7 @@ app.get('/data', (req, res) => {
         };
     });
 
-    console.log('Dados processados:', data); // Adicionando log para debug
+    //console.log('Dados processados:', data); // Adicionando log para debug
 
     res.json(data); // Retornando todos os dados
 });

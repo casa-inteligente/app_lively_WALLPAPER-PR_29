@@ -39,6 +39,13 @@
     </div>
 
     <script>
+        // Função para converter string de data para objeto Date
+        function parseDate(str) {
+            const [day, month] = str.split('/').map(Number);
+            const year = new Date().getFullYear();
+            return new Date(year, month - 1, day);
+        }
+
         fetch('/data')
             .then(response => {
                 console.log('Resposta recebida:', response);
@@ -54,15 +61,29 @@
                 const dataRows = document.getElementById('dataRows');
 
                 // Adicionar cabeçalhos
-                const headers = ['DATA', 'HORA', 'NOME', 'SITUAÇÃO'];
+                const headers = ['DATA', 'HORA', 'NOME', 'SITUAÇÃO', 'LIXO'];
                 headers.forEach(header => {
                     const th = document.createElement('th');
                     th.textContent = header;
                     headerRow.appendChild(th);
                 });
 
-                // Adicionar dados
-                data.forEach(row => {
+                // Obter data de hoje
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                console.log('Data de hoje:', today);
+
+                // Filtrar dados para mostrar apenas a data atual e datas futuras
+                const filteredData = data.filter(row => {
+                    const rowDate = parseDate(row.DATA);
+                    console.log(`Comparando ${rowDate} com ${today}`);
+                    return rowDate >= today;
+                });
+
+                console.log('Dados filtrados:', filteredData);
+
+                // Adicionar dados filtrados à tabela
+                filteredData.forEach(row => {
                     const tr = document.createElement('tr');
                     Object.values(row).forEach(value => {
                         const td = document.createElement('td');
@@ -76,8 +97,4 @@
     </script>
     <!-- Adicionando Bootstrap JS e dependências -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@
