@@ -1,7 +1,6 @@
 const express = require('express');
 const xlsx = require('xlsx');
-const { format, isAfter, startOfDay, addDays } = require('date-fns');
-const path = require('path');
+const { format, isAfter, startOfDay } = require('date-fns');
 
 const app = express();
 const port = 3000;
@@ -18,26 +17,48 @@ app.get('/data', (req, res) => {
     worksheet['!ref'] = newRange;
 
     const xlData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
-    const headers = xlData[0];
+    console.log('Dados do Excel:', xlData); // Adicionando log para debug
     const today = startOfDay(new Date());
 
     const data = xlData.slice(1).map(row => {
         const dateValue = (row[0] - (25567 + 1)) * 86400 * 1000; // Ajustando para o bug do Excel
         const date = new Date(dateValue);
-        const timeValue = (row[1] - (25567 + 1)) * 86400 * 1000; // Ajustando para o bug do Excel
-        const time = new Date(timeValue);
+
+        let hours, minutes, seconds;
+
+        if (typeof row[1] === 'number') {
+            // Caso o valor seja um número, converte para horas, minutos e segundos
+            const totalSeconds = Math.floor((row[1] - (25567 + 1)) * 86400);
+            hours = Math.floor(totalSeconds / 3600);
+            minutes = Math.floor((totalSeconds % 3600) / 60);
+            seconds = totalSeconds % 60;
+        } else if (typeof row[1] === 'string') {
+            // Caso o valor seja uma string, divida e converte para horas, minutos e segundos
+            const timeParts = row[1].split(':');
+            hours = parseInt(timeParts[0], 10);
+            minutes = parseInt(timeParts[1], 10);
+            seconds = parseInt(timeParts[2], 10);
+        }
+
+        date.setHours(hours);
+        date.setMinutes(minutes);
+        date.setSeconds(seconds);
 
         return {
             DATA: format(date, 'dd/MM'),
-            HORA: format(time, 'HH:mm'),
+            HORA: format(date, 'HH:mm:ss'),
             NOME: row[2],
             SITUACAO: row[3],
             fullDate: startOfDay(date) // Preserve a data para comparação
         };
     });
 
+    console.log('Dados processados:', data); // Adicionando log para debug
+
     const filteredData = data.filter(row => isAfter(row.fullDate, today) || row.fullDate.getTime() === today.getTime())
         .map(({ fullDate, ...rest }) => rest);
+
+    console.log('Dados filtrados:', filteredData); // Adicionando log para debug
 
     res.json(filteredData);
 });
