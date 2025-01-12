@@ -86,7 +86,7 @@
     <script>
         async function fetchPauta() {
             try {
-                let response = await fetch('http://10.40.22.35:8000/pauta/');
+                let response = await fetch('http://10.40.22.35:8000/all/');
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede');
                 }
