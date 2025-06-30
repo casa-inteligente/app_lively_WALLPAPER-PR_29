@@ -12,7 +12,7 @@
     <!-- Header -->
     <header class="fixed top-0 inset-x-0 bg-gray-700 text-white py-4 z-50 shadow-md">
         <div class="container mx-auto text-center">
-            <h1 class="text-2xl font-semibold">Pauta de Audiências</h1>
+            <h1 class="text-2xl font-semibold"></h1>
         </div>
     </header>
 
@@ -72,8 +72,8 @@
                 const formattedTime = now.toLocaleTimeString('pt-br', { hour: "2-digit", minute: "2-digit" });
                 document.getElementById('last_update').textContent = formattedTime;
 
-                const headerTitle = document.querySelector("#pauta-content > header > div > h2");
-                if (headerTitle) headerTitle.textContent = 'Movimentações';
+                // const headerTitle = document.querySelector("#pauta-content > header > div > h2");
+                // if (headerTitle) headerTitle.textContent = '                    Movimentações                              ';
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
             }
