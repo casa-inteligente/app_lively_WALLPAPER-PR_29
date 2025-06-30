@@ -1,122 +1,79 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pauta de Compromissos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .header {
-            background-color: #7c8691;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            z-index: 1000;
-            position: fixed;
-            width: 100%;
-            top: 0;
-        }
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-        .footer {
-            background-color: #343a40;
-            color: white;
-            padding: 15px 0;
-            position: fixed;
-            bottom: 150px;
-            width: 100%;
-            text-align: center;
-        }
+<body class="bg-gray-100 text-gray-900">
+    <!-- Header -->
+    <header class="fixed top-0 inset-x-0 bg-gray-700 text-white py-4 z-50 shadow-md">
+        <div class="container mx-auto text-center">
+            <h1 class="text-2xl font-semibold">Pauta de Audiências</h1>
+        </div>
+    </header>
 
-        .content {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 100px;
-            /* Adiciona margem superior para evitar sobreposição com o cabeçalho fixo */
-        }
+    <!-- Main Content -->
+    <main class="container mx-auto flex flex-col lg:flex-row gap-8 mt-24 px-4">
 
-        .logo-container {
-            flex: 1;
-            text-align: center;
-            margin-top: -100px;
-            /* Ajuste a margem conforme necessário */
-        }
+        <!-- Logo and Info -->
+        <aside class="w-full lg:w-5/12 flex flex-col items-center">
+            <img src="https://www.sap.sc.gov.br/wp-content/uploads/2014/03/PP-COLORIDO-PNG.png" alt="Logo"
+                class="w-48 h-auto mb-6" />
+            <div class="text-center text-sm space-y-1">
+                <p class="font-semibold">Ramais da unidade:</p>
+                <p>Para transferir (FLASH+RAMAL) | Captura de chamada (**)</p>
+                <p>46671 - Penal</p>
+                <p>46672 - Plantão</p>
+                <p>46673 - Casa da revista</p>
+                <p>46674 - Diretor</p>
+                <p>46675 - Mauricio</p>
+                <p>46676 - Enfermagem</p>
+                <p>46677 - Setor Psicossocial</p>
+                <p>46678 - Fábio/Weslen</p>
+                <p>46679 - Chefe de segurança</p>
+                <!-- Last Updated -->
+                <div class="container mx-auto text-right mt-2 px-4">
+                    <p class="text-xs text-gray-600">Última atualização: <span id="last_update">--:--</span></p>
+                </div>
 
-        .logo-container img {
-            width: 300px;
-            height: 600px;
-            object-fit: contain;
-        }
+            </div>
+        </aside>
 
-        .text-container {
-            text-align: center;
-            margin-top: -120px;
-            /* Ajuste a margem conforme necessário */
-        }
+        <!-- Pauta Table -->
+        <section class="w-full lg:w-7/12 bg-white shadow rounded p-4 overflow-auto" id="pauta-content">
+            <!-- Pauta será carregada aqui -->
+        </section>
+    </main>
 
-        .text-container p {
-            margin: 5px 0;
-            /* Ajuste a margem conforme necessário */
-        }
 
-        .table-container {
-            flex: 2;
-            margin: 20px;
-        }
+    <!-- Footer -->
+    <footer class="fixed bottom-0 inset-x-0 bg-gray-800 text-white py-3 text-center text-sm">
+        <p>2025 Presídio Regional de Maravilha – Todos os direitos reservados</p>
+    </footer>
 
-        .last-updated {
-            text-align: right;
-            margin-top: 10px;
-        }
-
-        .btn {
-            display: none;
-        }
-
-        .highlight-today {
-            background-color: rgb(231, 222, 222);
-            color: rgb(165, 12, 12);
-        }
-
-        .highlight-visitas {
-            background-color: rgb(173, 216, 230);
-            /* Azul claro */
-        }
-    </style>
     <script>
         async function fetchPauta() {
             try {
-                //let response = await fetch('http://10.40.22.35:8000/all/');
-                let response = await fetch('http://10.40.22.35:8000/all/');
-                if (!response.ok) {
-                    throw new Error('Erro na resposta da rede');
-                }
-                let data = await response.text();
+                const response = await fetch('http://10.40.22.35:8000/all/');
+                if (!response.ok) throw new Error('Erro na resposta da rede');
+
+                const data = await response.text();
                 document.getElementById('pauta-content').innerHTML = data;
 
-                // Destacar as linhas do dia atual
                 highlightTodayRows();
-
-                // Destacar as linhas que contêm a palavra "Visitas" na coluna "Nome"
                 highlightVisitasRows();
-
-                // Desativar links na tabela
                 disableLinks();
 
-                // Ocultar os botões após carregar os dados
-                const buttons = document.querySelectorAll('.btn');
-                buttons.forEach(button => button.style.display = 'none');
-
-                // atualiza a hora da ultima atualização
                 const now = new Date();
                 const formattedTime = now.toLocaleTimeString('pt-br', { hour: "2-digit", minute: "2-digit" });
-                document.getElementById('last_update').textContent = `${formattedTime}`;
+                document.getElementById('last_update').textContent = formattedTime;
 
-                // Alterar o texto do cabeçalho após o carregamento do conteúdo
                 const headerTitle = document.querySelector("#pauta-content > header > div > h2");
-                if (headerTitle) {
-                    headerTitle.textContent = 'Movimentações';
-                }
+                if (headerTitle) headerTitle.textContent = 'Movimentações';
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
             }
@@ -125,91 +82,35 @@
         function highlightTodayRows() {
             const today = new Date();
             const todayString = today.toLocaleDateString('pt-br', { day: '2-digit', month: '2-digit', year: '2-digit' });
-            const rows = document.querySelectorAll('#pauta-content tr');
-            rows.forEach(row => {
+            document.querySelectorAll('#pauta-content tr').forEach(row => {
                 const dateCell = row.querySelector('td:first-child');
                 if (dateCell && dateCell.textContent.trim() === todayString) {
-                    row.classList.add('highlight-today');
+                    row.classList.add('bg-red-100', 'text-red-700');
                 }
             });
         }
 
         function highlightVisitasRows() {
-            const rows = document.querySelectorAll('#pauta-content tr');
-            rows.forEach(row => {
+            document.querySelectorAll('#pauta-content tr').forEach(row => {
                 const nomeCell = row.querySelector('td:nth-child(3)');
                 if (nomeCell && nomeCell.textContent.toLowerCase().includes('visita')) {
-                    row.classList.add('highlight-visitas');
+                    row.classList.add('bg-blue-100');
                 }
             });
         }
 
         function disableLinks() {
-            const links = document.querySelectorAll('#pauta-content a');
-            links.forEach(link => {
+            document.querySelectorAll('#pauta-content a').forEach(link => {
                 link.removeAttribute('href');
+                link.classList.remove('text-blue-500');
+                link.classList.add('text-inherit');
                 link.style.pointerEvents = 'none';
-                link.style.color = 'inherit'; // Remover a aparência de link
-                link.style.textDecoration = 'none';
             });
         }
 
-        // Atualizar a pauta a cada 5 minutos (300000 milissegundos)
-        setInterval(fetchPauta, 300000); // 300000 milissegundos = 5 minutos
-
-        // Atualizar a pauta quando a página for carregada
+        setInterval(fetchPauta, 300000);
         window.onload = fetchPauta;
     </script>
-</head>
-
-<body>
-    <header class="header">
-        <div class="container">
-            <h2 class="text-center">Pauta de Audiências</h2>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="content">
-            <!-- Coluna da esquerda para o logo -->
-            <div class="logo-container">
-                <img src="https://www.sap.sc.gov.br/wp-content/uploads/2014/03/PP-COLORIDO-PNG.png" alt="Logo"
-                    class="img-fluid">
-                <div class="text-container">
-                    <p>Ramais da unidade:</p>
-                    <p>Para transferir (FLASH+RAMAL) <br> Captura de chamada (**)</p>
-                    <p>46671 - Penal</p>
-                    <p>46672 - Plantão</p>
-                    <p>46673 - Casa da revista</p>
-                    <p>46674 - Diretor</p>
-                    <p>46675 - Mauricio</p>
-                    <p>46676 - Enfermagem</p>
-                    <p>46677 - Setor Psicossocial </p>
-                    <p>46678 - Fábio/Weslen</p>
-                    <p>46679 - Chefe de segurança </p>
-                </div>
-            </div>
-            <!-- Coluna da direita para a tabela e hora atualizada -->
-            <div class="table-container" id="pauta-content">
-                <!-- A pauta de compromissos será carregada aqui -->
-            </div>
-        </div>
-        <div class="last-updated">
-            <!-- Mostrar hora da atualização -->
-            <p id="last_update">--:--</p>
-        </div>
-    </div>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-        <div class="container">
-            <p class="mb-0">2025 Presidío regional de Maravilha &#8211; Todos os direitos reservados</p>
-        </div>
-    </footer>
-    <!-- Bootstrap JS e dependências -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
