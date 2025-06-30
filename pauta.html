@@ -86,6 +86,7 @@
     <script>
         async function fetchPauta() {
             try {
+                //let response = await fetch('http://10.40.22.35:8000/all/');
                 let response = await fetch('http://10.40.22.35:8000/all/');
                 if (!response.ok) {
                     throw new Error('Erro na resposta da rede');
@@ -202,7 +203,7 @@
     <!-- Rodapé -->
     <footer class="footer">
         <div class="container">
-            <p class="mb-0">2025 Presidío regional de Maravilha - Todos os direitos reservados</p>
+            <p class="mb-0">2025 Presidío regional de Maravilha &#8211; Todos os direitos reservados</p>
         </div>
     </footer>
     <!-- Bootstrap JS e dependências -->
