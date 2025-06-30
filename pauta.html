@@ -66,17 +66,19 @@
 
                 highlightTodayRows();
                 highlightVisitasRows();
+                makeRowsToggleStrike();
                 disableLinks();
 
-                const now = new Date();
-                const formattedTime = now.toLocaleTimeString('pt-br', { hour: "2-digit", minute: "2-digit" });
-                document.getElementById('last_update').textContent = formattedTime;
-
-                // const headerTitle = document.querySelector("#pauta-content > header > div > h2");
-                // if (headerTitle) headerTitle.textContent = '                    Movimentações                              ';
+                updateLastUpdate();
             } catch (error) {
                 console.error('Erro ao buscar os dados:', error);
             }
+        }
+
+        function updateLastUpdate() {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString('pt-br', { hour: "2-digit", minute: "2-digit" });
+            document.getElementById('last_update').textContent = formattedTime;
         }
 
         function highlightTodayRows() {
@@ -99,6 +101,15 @@
             });
         }
 
+        function makeRowsToggleStrike() {
+            document.querySelectorAll('#pauta-content tr').forEach(row => {
+                row.addEventListener('click', () => {
+                    row.classList.toggle('line-through');
+                    row.classList.toggle('text-gray-400');
+                });
+            });
+        }
+
         function disableLinks() {
             document.querySelectorAll('#pauta-content a').forEach(link => {
                 link.removeAttribute('href');
@@ -108,8 +119,15 @@
             });
         }
 
-        setInterval(fetchPauta, 300000);
-        window.onload = fetchPauta;
+        setInterval(() => {
+            fetchPauta();
+            updateLastUpdate();
+        }, 300000);
+
+        window.onload = () => {
+            fetchPauta();
+            updateLastUpdate();
+        };
     </script>
 </body>
 
